@@ -1,29 +1,17 @@
-package main
+package crawler
 
 import (
 	"fmt"
+	"io/ioutil"
 	"net/http"
 	"os"
-	log "github.com/llimllib/loglevel"
-	"io/ioutil"
 	"regexp"
 	"strconv"
+
+	log "github.com/llimllib/loglevel"
 )
 
-func normalize(s []byte) []byte {
-	return append(s, make([]byte, 8-len(s))...)
-}
-
-func main() {
-	log.SetPriorityString("info")
-	log.SetPrefix("crawler")
-
-	log.Debug(os.Args)
-
-	if len(os.Args) < 2 {
-		log.Fatalln("Missing Url arg")
-	}
-
+func FetchPrice() {
 	var prices []float64
 	url := os.Args[1]
 	fmt.Println("Fetching HTML...")
@@ -46,13 +34,14 @@ func main() {
 	if result == nil {
 		log.Infoln("No cars available!")
 	}
-	for _, priceString := range(result) {
+	for _, priceString := range result {
 		priceInBytes := priceExtractor.Find(priceString)
 		output, err := strconv.ParseFloat(fmt.Sprintf("%s", priceInBytes), 10)
 		if err != nil {
 			log.Fatalln("Price format changed!")
 		}
+		log.Infoln(output * 1000)
 		prices = append(prices, output*1000)
 	}
-}
 
+}

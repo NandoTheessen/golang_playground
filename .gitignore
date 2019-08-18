@@ -9,3 +9,5 @@
 .terraform
 *.tfstate
 *.backup
+*.db
+*.db-journal
