@@ -3,11 +3,11 @@ package main
 import (
 
 	// "net/http"
-	"database/sql"
 
-	"github.com/go-bongo/bongo"
 	log "github.com/llimllib/loglevel"
 	_ "github.com/mattn/go-sqlite3"
+	crawler "github.com/nandotheessen/golang_playground/internal/crawler"
+	"github.com/nandotheessen/golang_playground/internal/persistence"
 	// "io/ioutil"
 	// "regexp"
 	// "strconv"
@@ -18,27 +18,17 @@ import (
 // }
 
 type PricePoint struct {
-	bongo.DocumentBase `bson:",inline"`
-	Date               string
-	Price              float64
+	Date  string
+	Price float64
 }
 
 func main() {
 	log.SetPriorityString("debug")
 	log.SetPrefix("crawler")
-
+	persistence.DatabaseConnection()
 	// if len(os.Args) < 2 {
 	// 	log.Fatalln("Missing Url arg")
 	// }
-	db, err := sql.Open("sqlite3", "./prices.db")
-	if err != nil {
-		log.Fatal(err)
-	}
-	defer db.Close()
 
-	sqlStmt := `
-	create table pricepoints (id integer not null primary key, date date, price float);
-	`
-	_, err = db.Exec(sqlStmt)
-
+	crawler.FetchPrice()
 }
