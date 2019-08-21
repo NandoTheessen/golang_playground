@@ -4,17 +4,17 @@ import (
 	"fmt"
 	"io/ioutil"
 	"net/http"
-	"os"
 	"regexp"
 	"strconv"
+	"time"
 
 	log "github.com/llimllib/loglevel"
+	"github.com/nandotheessen/golang_playground/internal/persistence"
 )
 
-func FetchPrice() {
-	var prices []float64
-	url := os.Args[1]
+func FetchPrice(url string, model string, p *persistence.Persister) {
 	fmt.Println("Fetching HTML...")
+	var prices []float64
 	resp, err := http.Get(url)
 	// handle the error if there is one
 	if err != nil {
@@ -27,6 +27,7 @@ func FetchPrice() {
 	if err != nil {
 		log.Fatalln("Error reading response body!")
 	}
+
 	log.Infoln("Creating regex's")
 	priceMatcher, _ := regexp.Compile("Preis: € (\\d+.\\d+)")
 	priceExtractor, _ := regexp.Compile("(\\d+\\.\\d+)")
@@ -43,5 +44,8 @@ func FetchPrice() {
 		log.Infoln(output * 1000)
 		prices = append(prices, output*1000)
 	}
-
+	dt := time.Now()
+	for _, price := range prices {
+		p.SaveToDB(dt.Unix(), model, price)
+	}
 }
