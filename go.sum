@@ -4,6 +4,8 @@ github.com/go-bongo/bongo v0.10.4 h1:equAJCu7im1+kVmOJw4929ijR7peemzx3Qkzk/2hWSI
 github.com/go-bongo/bongo v0.10.4/go.mod h1:D6pn2yWfb7NzktE9m7fW7wIOHSinlQ5glp8u1XNv4So=
 github.com/lib/pq v1.1.1 h1:sJZmqHoEaY7f+NPP8pgLB/WxulyR3fewgCM2qaSlBb4=
 github.com/lib/pq v1.1.1/go.mod h1:5WUZQaWbwv1U+lTReE5YruASi9Al49XbQIvNi/34Woo=
+github.com/lib/pq v1.2.0 h1:LXpIM/LZ5xGFhOpXAQUIMM1HdyqzVYM13zNdjCEEcA0=
+github.com/lib/pq v1.2.0/go.mod h1:5WUZQaWbwv1U+lTReE5YruASi9Al49XbQIvNi/34Woo=
 github.com/llimllib/loglevel v0.0.0-20131025150502-3bb4128b5f3b h1:yLi3DWXHHpMbyglMhh+gDObvL2kfT6K5E+OnLtef/BQ=
 github.com/llimllib/loglevel v0.0.0-20131025150502-3bb4128b5f3b/go.mod h1:rXDeuXCQpd/9ItjmXQpH2UHjU00e7ViAXE0WcFAQlIY=
 github.com/mattn/go-sqlite3 v1.11.0 h1:LDdKkqtYlom37fkvqs8rMPFKAMe8+SgjbwZ6ex1/A/Q=
