@@ -2,36 +2,43 @@ package persistence
 
 import (
 	"database/sql"
+	"fmt"
 
 	log "github.com/llimllib/loglevel"
 	_ "github.com/mattn/go-sqlite3"
 )
 
-func DatabaseConnection() *sql.DB {
+type Persister struct {
+	db *sql.DB
+}
+
+func CreateDatabasePersister() *Persister {
+	Persister := &Persister{}
 	db, err := sql.Open("sqlite3", "./prices.db")
 	if err != nil {
 		log.Fatal("Failure establishing database conection \n", err)
 	}
-	defer db.Close()
 
 	sqlStmt := `
-	create table pricepoints (id integer primary key autoincrement, date date, price float);
+	create table pricepoints (id integer primary key autoincrement, date integer, model text, price int);
 	`
 	_, err = db.Exec(sqlStmt)
 	if err != nil && err.Error() != "table pricepoints already exists" {
 		log.Fatal("db not created", err)
 	}
-	return db
+
+	Persister.db = db
+	return Persister
 }
 
-func SaveToDB() {
-	db := DatabaseConnection()
-
-	tx, err := db.Begin()
+func (p *Persister) SaveToDB(date int64, model string, price float64) {
+	tx, err := p.db.Begin()
 	if err != nil {
 		log.Fatal("error in db Begin\n", err)
 	}
-	stmt, err := tx.Prepare("INSERT INTO pricepoints VALUES(null, '10.10.1987', '24.90')")
+	stmtString := fmt.Sprintf("INSERT INTO pricepoints VALUES(null, %v, '%s', %f)", date, model, price)
+	fmt.Println(stmtString)
+	stmt, err := tx.Prepare(stmtString)
 	if err != nil {
 		log.Fatal("error in db prepare\n", err)
 	}
